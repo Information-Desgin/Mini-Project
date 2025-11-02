@@ -36,7 +36,7 @@
       color: var(--color-text1);
       font-feature-settings: "liga" off, "clig" off;
       font-family: var(--font-family-default);
-      font-size: 36px;
+      font-size: 32px;
       font-weight: var(--font-weight-medium);
       line-height: 40px;
       letter-spacing: -1.44px;
@@ -46,7 +46,7 @@
       color: var(--color-text2);
       font-feature-settings: "liga" off, "clig" off;
       font-family: var(--font-family-default);
-      font-size: 17px;
+      font-size: 15px;
       font-weight: var(--font-weight-regular);
       letter-spacing: -0.68px;
     }
