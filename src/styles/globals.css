@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/* ---------------------------
+   🌙 Global Base Styles
+--------------------------- */
+:root {
+  background-color: black;
+  color: white;
+  font-family: "Pretendard", sans-serif;
+}
+
+/* ---------------------------
+   🎨 Theme Design Tokens
+--------------------------- */
+@theme {
+  --color-text1: #ffffff;
+  --color-text2: #707070;
+  --color-main1: #69ddd1;
+  --color-main2: #fbbb3b;
+  --color-main3: #e42c57;
+  --color-axis: #596ec5;
+
+  /* typography tokens */
+  --font-family-default: "Pretendard", sans-serif;
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
+  --font-weight-light: 300;
+}
+
+/* ---------------------------
+   🧱 Components Layer
+--------------------------- */
+@layer components {
+  .title {
+    h1 {
+      color: var(--color-text1);
+      font-feature-settings: "liga" off, "clig" off;
+      font-family: var(--font-family-default);
+      font-size: 36px;
+      font-weight: var(--font-weight-medium);
+      line-height: 40px;
+      letter-spacing: -1.44px;
+    }
+
+    h2 {
+      color: var(--color-text2);
+      font-feature-settings: "liga" off, "clig" off;
+      font-family: var(--font-family-default);
+      font-size: 17px;
+      font-weight: var(--font-weight-regular);
+      letter-spacing: -0.68px;
+    }
+  }
+
+  .label {
+    color: var(--color-text1);
+    font-feature-settings: "liga" off, "clig" off;
+    font-family: var(--font-family-default);
+    font-size: 16px;
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.64px;
+  }
+
+  .date {
+    color: var(--color-text1);
+    font-feature-settings: "liga" off, "clig" off;
+    font-family: var(--font-family-default);
+    font-size: 12px;
+    font-weight: var(--font-weight-light);
+    letter-spacing: -0.48px;
+  }
+
+  .axis-label {
+    color: var(--color-text1);
+    text-align: center;
+    font-feature-settings: "liga" off, "clig" off;
+    font-family: var(--font-family-default);
+    font-size: 10px;
+    font-weight: var(--font-weight-light);
+    letter-spacing: -0.4px;
+  }
+}
