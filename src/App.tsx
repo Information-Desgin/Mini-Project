@@ -450,7 +450,6 @@ function App() {
                   "1.34B",
                   "1.20B",
                 ]}
-                rightOffset={18}
               />
 
               {/* Active Account 축 */}
@@ -470,7 +469,6 @@ function App() {
                   "7.4",
                   "6.0",
                 ]}
-                rightOffset={0}
               />
             </>
           )}
@@ -491,21 +489,25 @@ function RightAxis({
   title,
   color,
   values,
-  rightOffset,
 }: {
   title: string;
   color: string;
   values: string[];
-  rightOffset: number;
 }) {
   return (
     <div
-      className={`absolute right-${rightOffset} top-2.5 bottom-[100px] flex flex-col justify-between text-[11px] border-l-2 ${color} pl-2`}
+      className={`absolute ${
+        title === "Value" ? "right-[73px]" : "right-0"
+      } top-2.5 bottom-[100px] flex flex-col justify-between text-[11px] border-l-2 ${color} pl-2`}
     >
       {values.map((v, i) => (
         <div key={i}>{v}</div>
       ))}
-      <div className="absolute -rotate-270 -right-10 top-1/2 label">
+      <div
+        className={`absolute -rotate-270 top-1/2 label ${
+          title === "Active Account" ? "-right-20" : "-right-10"
+        }`}
+      >
         {title}
       </div>
     </div>
