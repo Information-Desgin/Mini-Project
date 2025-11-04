@@ -297,13 +297,13 @@ function App() {
                     legend: "Normalized Value",
                     legendOffset: -50,
                     legendPosition: "middle",
+                    tickValues: [0, 0.2, 0.4, 0.6, 0.8, 1.0],
+                    format: (v) => v.toFixed(1),
                   }
                 : {
                     legend: "ATOM Price",
                     legendOffset: -50,
                     legendPosition: "middle",
-                    tickSize: 5,
-                    tickPadding: 5,
                     tickValues: d3.range(2.4, 5.5, (5.4 - 2.4) / 10),
                     format: (v) => v.toFixed(1),
                   }
