@@ -18,7 +18,10 @@ function App() {
   // ==============================================
   // 🔧 상태 관리
   // ==============================================
-  const [chartData, setChartData] = useState<any[]>([]);
+  const [chartData, setChartData] = useState<
+    { id: string; color: string; data: DataPoint[] }[]
+  >([]);
+
   const [hoverX, setHoverX] = useState<number | null>(null);
   const [activeSeries, setActiveSeries] = useState([
     "ATOM Price",
@@ -30,46 +33,67 @@ function App() {
   const chartRef = useRef<HTMLDivElement>(null);
 
   // ==============================================
+  // 타입 정의
+  // ==============================================
+  type CosmosRow = {
+    date: string;
+    atom_norm: number;
+    atom_price: number;
+    account_norm: number;
+    account_value: number;
+    value_norm: number;
+    value: number;
+  };
+
+  type DataPoint = {
+    x: Date;
+    y: number;
+    actual: number;
+  };
+
+  // ==============================================
   // 📊 CSV 데이터 로드 및 파싱
   // ==============================================
   useEffect(() => {
-    d3.csv("/data/merged-cosmos-data.csv", d3.autoType).then((rows) => {
-      const parsed = {
-        "ATOM Price": {
-          id: "ATOM Price",
-          color: "var(--color-main1)",
-          data: rows.map((r) => ({
-            x: new Date(r.date),
-            y: r.atom_norm,
-            actual: r.atom_price,
-          })),
-        },
-        "Active Account": {
-          id: "Active Account",
-          color: "var(--color-main2)",
-          data: rows.map((r) => ({
-            x: new Date(r.date),
-            y: r.account_norm,
-            actual: r.account_value,
-          })),
-        },
-        Value: {
-          id: "Value",
-          color: "var(--color-main3)",
-          data: rows.map((r) => ({
-            x: new Date(r.date),
-            y: r.value_norm,
-            actual: r.value,
-          })),
-        },
-      };
+    d3.csv<CosmosRow>("/data/merged-cosmos-data.csv", d3.autoType).then(
+      (rows) => {
+        const parsed = {
+          "ATOM Price": {
+            id: "ATOM Price",
+            color: "var(--color-main1)",
+            data: rows.map((r) => ({
+              x: new Date(r.date),
+              y: r.atom_norm,
+              actual: r.atom_price,
+            })),
+          },
+          "Active Account": {
+            id: "Active Account",
+            color: "var(--color-main2)",
+            data: rows.map((r) => ({
+              x: new Date(r.date),
+              y: r.account_norm,
+              actual: r.account_value,
+            })),
+          },
+          Value: {
+            id: "Value",
+            color: "var(--color-main3)",
+            data: rows.map((r) => ({
+              x: new Date(r.date),
+              y: r.value_norm,
+              actual: r.value,
+            })),
+          },
+        };
 
-      setChartData([
-        parsed["ATOM Price"],
-        parsed["Active Account"],
-        parsed["Value"],
-      ]);
-    });
+        setChartData([
+          parsed["ATOM Price"],
+          parsed["Active Account"],
+          parsed["Value"],
+        ]);
+      }
+    );
   }, []);
 
   // ==============================================
@@ -83,13 +107,24 @@ function App() {
   const valSeries = chartData.find((s) => s.id === "Value");
 
   const [atomMin, atomMax] = atomSeries
-    ? (d3.extent(atomSeries.data, (d) => Number(d.actual)) as [number, number])
+    ? (d3.extent(atomSeries.data, (d: DataPoint) => Number(d.actual)) as [
+        number,
+        number
+      ])
     : [0, 1];
+
   const [accMin, accMax] = accSeries
-    ? (d3.extent(accSeries.data, (d) => Number(d.actual)) as [number, number])
+    ? (d3.extent(accSeries.data, (d: DataPoint) => Number(d.actual)) as [
+        number,
+        number
+      ])
     : [0, 1];
+
   const [valMin, valMax] = valSeries
-    ? (d3.extent(valSeries.data, (d) => Number(d.actual)) as [number, number])
+    ? (d3.extent(valSeries.data, (d: DataPoint) => Number(d.actual)) as [
+        number,
+        number
+      ])
     : [0, 1];
 
   const atomScale = d3
@@ -276,7 +311,7 @@ function App() {
             lineWidth={3}
             enablePoints={false}
             enableSlices="x"
-            onMouseMove={(point, event) => {
+            onMouseMove={(_, event) => {
               // SVG 기준 좌표 계산
               const bounds = chartRef.current?.getBoundingClientRect();
               if (!bounds) return;
@@ -312,7 +347,7 @@ function App() {
                     const p = slice.points.find((pt) => pt.id?.includes(id));
                     if (!p) return null;
 
-                    const actual = Number((p.data as any).actual);
+                    const actual = Number((p.data as DataPoint).actual);
 
                     return (
                       <div
